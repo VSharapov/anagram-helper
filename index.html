@@ -23,8 +23,15 @@
       }
 
       function updateAnagram() {
-        phrase1 = document.getElementById('phrase1').value.toUpperCase().replace(/[^0-9a-z]/gi, '');
-        phrase2 = document.getElementById('phrase2').value.toUpperCase().replace(/[^0-9a-z]/gi, '');
+        // Sometimes while editing a <br /> will get inserted, so I clean out the contents:
+        phraseIds = ['phrase1', 'phrase2']
+        for (i in phraseIds) {
+          tagId = phraseIds[i];
+          while (document.getElementById(tagId).children.length != 0) {document.getElementById(tagId).removeChild(document.getElementById(tagId).children[0])}
+        }
+        // Extract and filter
+        phrase1 = document.getElementById('phrase1').innerHTML.toUpperCase().replace(/[^0-9a-z]/gi, '');
+        phrase2 = document.getElementById('phrase2').innerHTML.toUpperCase().replace(/[^0-9a-z]/gi, '');
         map1 = []; map2 = [];
         for (i in phrase1) {
           map1.push({letter: phrase1[i], mappedTo: -1})
@@ -32,28 +39,30 @@
         for (i in phrase2) {
           map2.push({letter: phrase2[i], mappedTo: -1})
         }
-        for (i in map1) {
-          if (map1[i]['mappedTo'] != -1) {continue;}
-          for (j in map2) {
-            if (map2[j]['mappedTo'] != -1) {continue;}
-            if (map1[i]['letter'] == map2[j]['letter']) {
-              map2[j]['mappedTo'] = i;
-              map1[i]['mappedTo'] = j;
-              console.log(i, map1[i], j, map2[j])
+        // Map anagrammed characters
+        for (i1 in map1) {
+          if (map1[i1]['mappedTo'] != -1) {continue;}
+          for (i2 in map2) {
+            if (map2[i2]['mappedTo'] != -1) {continue;}
+            if (map1[i1]['letter'] == map2[i2]['letter']) {
+              map2[i2]['mappedTo'] = i1;
+              map1[i1]['mappedTo'] = i2;
+              console.log(i1, map1[i1], i2, map2[i2])
               break;
             }
           }
         }
+        // Display anagram view
         document.getElementById('in1butNot2').innerHTML = "";
-        for (i in map1) {
-          if (map1[i]['mappedTo'] == -1){
-            document.getElementById('in1butNot2').innerHTML += map1[i]['letter'];
+        for (i1 in map1) {
+          if (map1[i1]['mappedTo'] == -1){
+            document.getElementById('in1butNot2').innerHTML += map1[i1]['letter'];
           }
         }
         document.getElementById('in2butNot1').innerHTML = "";
-        for (i in map2) {
-          if (map2[i]['mappedTo'] == -1){
-            document.getElementById('in2butNot1').innerHTML += map2[i]['letter'];
+        for (i2 in map2) {
+          if (map2[i2]['mappedTo'] == -1){
+            document.getElementById('in2butNot1').innerHTML += map2[i2]['letter'];
           }
         }
       }
@@ -70,10 +79,12 @@
 	</head>
   <body onload="main()">
     <form oninput="updateAnagram()" onchange="updateAnagram()">
-      <input id="phrase1" type="text" value="qwertyuiop" /><br />
-      <h1 id="in1butNot2"></h1><br />
-      <h1 id="in2butNot1"></h1><br />
-      <input id="phrase2" type="text" value="typewriter" /><br />
+      <h1 contenteditable="true" id="phrase1">clogged toilet</h1><br />
+      <!--<input id="phrase1" type="text" value="qwertyuiop" /><br />-->
+      <h2 id="in1butNot2"></h1><br />
+      <h2 id="in2butNot1"></h1><br />
+      <!--<input id="phrase2" type="text" value="typewriter" /><br />-->
+      <h1 contenteditable="true" id="phrase2">delete google</h1><br />
     </form>
     <hr />
     <div id="readme"></div>
