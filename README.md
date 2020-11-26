@@ -32,9 +32,16 @@ reddit became le repost-men
 # TODO:
 - [x] Make an interface like [https://connorholyday.github.io/anagram-helper/][1]...
     - [x] ...but without React...
-    - [x] ...with both phrases represented
-    - [x] ...and dark mode...
+    - [x] ...with both phrases represented...
+    - [x] ...and dark mode
 - [ ] Suggestions
+    - [ ] Has all characters within phrase
+    - [ ] Perfect bridge, e.g. Need `a` + `e` suggest `anagram` + `manager` or `bad` + `bed`
 - [ ] Wordlists
+    - [ ] Hint at near-matches from arbitrary wordlist
+    - [ ] Look for easy wordlists - something grabbable through `xmlHttpRequest`
+        - [ ] Something tiny for testing
+    - [ ] Look for functional wordlists - UrbanDictionary, reddit minus the gibberish
+    - [ ] Checkboxes to choose your wordlist(s)
 
 [1]: https://connorholyday.github.io/anagram-helper/
