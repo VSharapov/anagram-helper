@@ -43,5 +43,6 @@ reddit became le repost-men
         - [ ] Something tiny for testing
     - [ ] Look for functional wordlists - UrbanDictionary, reddit minus the gibberish
     - [ ] Checkboxes to choose your wordlist(s)
+- [ ] History - track changes, revert, branch
 
 [1]: https://connorholyday.github.io/anagram-helper/
