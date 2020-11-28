@@ -44,5 +44,6 @@ reddit became le repost-men
     - [ ] Look for functional wordlists - UrbanDictionary, reddit minus the gibberish
     - [ ] Checkboxes to choose your wordlist(s)
 - [ ] History - track changes, revert, branch
+- [ ] Custom ignore list vs. `[^0-9a-z]`
 
 [1]: https://connorholyday.github.io/anagram-helper/
