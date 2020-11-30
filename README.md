@@ -30,10 +30,12 @@ reddit became le repost-men
 ```
 
 # TODO:
-- [x] Make an interface like [https://connorholyday.github.io/anagram-helper/][1]...
-    - [x] ...but without React...
-    - [x] ...with both phrases represented...
-    - [x] ...and dark mode
+- Interface
+    - [ ] Auto-resize text to fit width
+    - [ ] Advanced settings menu
+        - [ ] Custom ignore list vs. `[^0-9a-z]`
+        - [ ] Hide matching letters
+        - [ ] History - track changes, revert, branch
 - [ ] Suggestions
     - [ ] Has all characters within phrase
     - [ ] Perfect bridge, e.g. Need `a` + `e` suggest `anagram` + `manager` or `bad` + `bed`
@@ -43,7 +45,5 @@ reddit became le repost-men
         - [ ] Something tiny for testing
     - [ ] Look for functional wordlists - UrbanDictionary, reddit minus the gibberish
     - [ ] Checkboxes to choose your wordlist(s)
-- [ ] History - track changes, revert, branch
-- [ ] Custom ignore list vs. `[^0-9a-z]`
 
 [1]: https://connorholyday.github.io/anagram-helper/
