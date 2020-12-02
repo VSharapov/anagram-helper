@@ -1,6 +1,9 @@
 # anagram-helper
 Bridge the gap between two near-anagrams
 
+## Demo
+[https://vsharapov.github.io/anagram-helper/](https://vsharapov.github.io/anagram-helper/)
+
 ## The idea
 I have two phrases that are _not_ anagrams but I want them to be.
 
