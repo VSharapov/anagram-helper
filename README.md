@@ -48,8 +48,5 @@ reddit became le repost-men
         - [ ] Something tiny for testing
     - [ ] Look for functional wordlists - UrbanDictionary, reddit minus the gibberish
     - [ ] Checkboxes to choose your wordlist(s)
-- [x] [Favicon](https://www.w3.org/2005/10/howto-favicon)
-    - [x] [data:URI of tiny PNG](https://garethrees.org/2007/11/14/pngcrush/)
-
 
 [1]: https://connorholyday.github.io/anagram-helper/

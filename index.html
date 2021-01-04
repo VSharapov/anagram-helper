@@ -2,13 +2,17 @@
 <html>
   <head>
     <title></title>
-    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAK0lEQVQYlWP4TwAwkKSAgYEBBaMogAswoBrKgE83XAGKADYT0BVgdQMuAAD9B88xbQ+zLwAAAABJRU5ErkJggg==" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <!--<meta http-equiv="refresh" content="5; URL=https://vas.im/anagram-helper/">-->
+    <link rel="icon" href="">
     <style type="text/css">
-      @media (prefers-color-scheme: dark) {
-        body {background-color: black; color: white;}
-        a {filter: invert(1) brightness(0.5) invert(1);}
+      code, pre {
+        background-color: #6666;
+        padding: 2px;
+        display: inline-block;
+      }
+      pre code {
+        background-color: #0000;
+        padding: 0px;
       }
       .big {
         filter: invert(1) brightness(0.9) invert(1);
@@ -18,91 +22,291 @@
         word-break: break-all;
       }
     </style>
+    <style type="text/css" media="(prefers-color-scheme: light)">
+    </style>
+    <style type="text/css" media="(prefers-color-scheme: dark)">
+      body {background-color: black; color: white;}
+      a:link    {color: #06f;}
+      a:visited {color: #61c;}
+      a:hover   {color: #a8c;}
+      select, button, input {filter: invert(1);}
+    </style>
+    <style type="text/css" media="(prefers-color-scheme: never)">
+      body {background-color: red;}
+    </style>
     <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.1/dist/showdown.min.js"></script>
     <script>
-      var readme = 'README.md'
-      var converter = new showdown.Converter();
-      html      = converter.makeHtml('loading ' + 'asd' + ' ...');
-
-      function reqListener () {
-        html      = converter.makeHtml(this.responseText);
-        document.getElementById('readme').innerHTML = html;
-        document.title = document.getElementById('readme').children[0].innerHTML;
+function updateAnagram() {
+  // Sometimes while editing a <br /> will get inserted, so I clean out the contents:
+  phraseIds = ['phrase1', 'phrase2']
+  for (i in phraseIds) {
+    tagId = phraseIds[i];
+    while (document.getElementById(tagId).children.length != 0) {document.getElementById(tagId).removeChild(document.getElementById(tagId).children[0])}
+  }
+  // Extract and filter
+  phrase1 = document.getElementById('phrase1').value.toUpperCase().replace(/[^0-9a-z]/gi, '');
+  phrase2 = document.getElementById('phrase2').value.toUpperCase().replace(/[^0-9a-z]/gi, '');
+  map1 = []; map2 = [];
+  for (i in phrase1) {
+    map1.push({letter: phrase1[i], mappedTo: -1})
+  }
+  for (i in phrase2) {
+    map2.push({letter: phrase2[i], mappedTo: -1})
+  }
+  // Map anagrammed characters
+  for (i1 in map1) {
+    if (map1[i1]['mappedTo'] != -1) {continue;}
+    for (i2 in map2) {
+      if (map2[i2]['mappedTo'] != -1) {continue;}
+      if (map1[i1]['letter'] == map2[i2]['letter']) {
+        map2[i2]['mappedTo'] = i1;
+        map1[i1]['mappedTo'] = i2;
+        console.log(i1, map1[i1], i2, map2[i2])
+        break;
       }
+    }
+  }
+  // Display anagram view
+  sink = "";
+  function styleOfNumber(number) {
+    if (number != -1) {
+      return 'thin and translucent';
+    } else {
+      return 'bold';
+    }
+  }
+  function styleText(strIn, styleDescription) {
+    out = "";
+    if (styleDescription == 'bold') {
+      out = "<b>" + strIn + "</b>";
+    }
+    if (styleDescription == 'thin and translucent') {
+      out = "<span style=\"opacity: 0.3; font-weight: lighter;\">" + strIn + "</span>";
+    }
+    return out;
+  }
+  document.getElementById('in1butNot2').innerHTML = "";
+  for (i1 in map1) {
+    document.getElementById('in1butNot2').innerHTML += styleText(
+      map1[i1]['letter'],
+      styleOfNumber(map1[i1]['mappedTo'])
+      )
+  }
+  document.getElementById('in2butNot1').innerHTML = "";
+  for (i2 in map2) {
+    document.getElementById('in2butNot1').innerHTML += styleText(
+      map2[i2]['letter'],
+      styleOfNumber(map2[i2]['mappedTo'])
+      )
+  }
+}
 
-      function updateAnagram() {
-        // Sometimes while editing a <br /> will get inserted, so I clean out the contents:
-        phraseIds = ['phrase1', 'phrase2']
-        for (i in phraseIds) {
-          tagId = phraseIds[i];
-          while (document.getElementById(tagId).children.length != 0) {document.getElementById(tagId).removeChild(document.getElementById(tagId).children[0])}
-        }
-        // Extract and filter
-        phrase1 = document.getElementById('phrase1').value.toUpperCase().replace(/[^0-9a-z]/gi, '');
-        phrase2 = document.getElementById('phrase2').value.toUpperCase().replace(/[^0-9a-z]/gi, '');
-        map1 = []; map2 = [];
-        for (i in phrase1) {
-          map1.push({letter: phrase1[i], mappedTo: -1})
-        }
-        for (i in phrase2) {
-          map2.push({letter: phrase2[i], mappedTo: -1})
-        }
-        // Map anagrammed characters
-        for (i1 in map1) {
-          if (map1[i1]['mappedTo'] != -1) {continue;}
-          for (i2 in map2) {
-            if (map2[i2]['mappedTo'] != -1) {continue;}
-            if (map1[i1]['letter'] == map2[i2]['letter']) {
-              map2[i2]['mappedTo'] = i1;
-              map1[i1]['mappedTo'] = i2;
-              console.log(i1, map1[i1], i2, map2[i2])
-              break;
-            }
-          }
-        }
-        // Display anagram view
-        sink = "";
-        function styleOfNumber(number) {
-          if (number != -1) {
-            return 'thin and translucent';
-          } else {
-            return 'bold';
-          }
-        }
-        function styleText(strIn, styleDescription) {
-          out = "";
-          if (styleDescription == 'bold') {
-            out = "<b>" + strIn + "</b>";
-          }
-          if (styleDescription == 'thin and translucent') {
-            out = "<span style=\"opacity: 0.3; font-weight: lighter;\">" + strIn + "</span>";
-          }
-          return out;
-        }
-        document.getElementById('in1butNot2').innerHTML = "";
-        for (i1 in map1) {
-          document.getElementById('in1butNot2').innerHTML += styleText(
-            map1[i1]['letter'],
-            styleOfNumber(map1[i1]['mappedTo'])
-            )
-        }
-        document.getElementById('in2butNot1').innerHTML = "";
-        for (i2 in map2) {
-          document.getElementById('in2butNot1').innerHTML += styleText(
-            map2[i2]['letter'],
-            styleOfNumber(map2[i2]['mappedTo'])
-            )
-        }
-      }
+var fileToRender = 'README.md';
+var defaultFile  = fileToRender;
+var getParams    = {};
+const converter  = new showdown.Converter();
+var textToParse  = '';
+var html         = '';
+var oreq;
 
-      function main() {
-        var oReq = new XMLHttpRequest();
-        oReq.addEventListener("load", reqListener);
-        oReq.open("GET", readme);
-        oReq.send();
-        //
-        updateAnagram();
+const cssAlwaysMedia = document.styleSheets[0].media.mediaText;
+const cssLightMedia  = document.styleSheets[1].media.mediaText;
+const cssDarkMedia   = document.styleSheets[2].media.mediaText;
+const cssNeverMedia  = document.styleSheets[3].media.mediaText;
+var cssLight         = document.styleSheets[1];
+var cssDark          = document.styleSheets[2];
+
+const menuOptions = {
+  'theme': {
+    'auto': true,
+    'dark': false,
+    'light': false
+  }, 'text-width': {
+    'full-width': false,
+    'readable': true
+  }, 'font-family': {
+    'serif': false,
+    'sans-serif': true,
+    'monospace': false
+  }, 'parse': {
+    'markdown': true,
+    'raw': false
+  }
+};
+var selectedOptions = {};
+
+function init () {
+  // GET parameters
+  var getPairs = location.search.substr(1).split('&');
+  for (var i in getPairs) {
+    getParams[getPairs[i].split('=')[0]] = getPairs[i].split('=')[1];
+  }
+
+  // Options
+  for (var i in menuOptions) {
+    for (var j in menuOptions[i]) {
+      if (menuOptions[i][j]) {
+        // Default...
+        selectedOptions[i] = j;
       }
+    }
+  }
+  for (var i in menuOptions) {
+    if (localStorage.getItem(i) in menuOptions[i]) {
+      // ...overridden by localStorage...
+      selectedOptions[i] = localStorage.getItem(i);
+    }
+  }
+  for (var i in menuOptions) {
+    if (getParams[i] in menuOptions[i]) {
+      // ...overriden by GET parameters
+      selectedOptions[i] = getParams[i];
+    }
+  }
+
+  if ('fileToRender' in getParams){
+    fileToRender = getParams.fileToRender;
+  }
+
+  // Loading...
+  html = converter.makeHtml('loading ``' + fileToRender + '`` ...');
+  makeFaviconText('⏳');
+}
+init();
+
+function makeFaviconText (textIn) {
+  var svg = 'data:image/svg+xml,' +
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+    '<text paint-order="stroke" stroke="white" stroke-width="16" ' +
+    'fill="black" font-stretch="ultra-condensed" font-family="sans-serif" ' +
+    'y=".9em" font-size="90">' + textIn + '</text></svg>';
+  document.querySelector('link[rel~="icon"]').href = svg;
+}
+
+function updateContent () {
+  var parsed = document.getElementById('parsed');
+  var rawContent = '<pre>' + textToParse + '</pre>';
+  var mdContent = converter.makeHtml(textToParse);
+  parsed.innerHTML = mdContent;
+  document.title = parsed.children[0].innerText;
+  if (selectedOptions['parse'] == 'raw') {
+    parsed.innerHTML = rawContent;
+  }
+  //makeFaviconText(document.title);
+  makeFaviconText(' Æ'); // Hacky - that's a six-per-em space - U+2006
+  // Scroll to #frament - remember, the content wasn't there onload
+  if (location.href.split('#').length > 1) {location.href = location.href;}
+}
+
+function reqListener () {
+  var parsed = document.getElementById('parsed');
+  textToParse = this.responseText;
+  updateContent();
+  if ((this.status < 200 || this.status > 300) && this.status != 304) {
+    parsed.innerHTML = converter.makeHtml('Status ' + this.status);
+    document.title = this.status;
+    makeFaviconText('❌');
+    console.log(this);
+  }
+}
+
+function toggleMenu () {
+  var miniMenu = '<button style="float:right;" onclick="toggleMenu()">' + '☰' +
+    '</button>';
+  var bigMenu = miniMenu;
+  var mDiv = document.getElementById('indexmdmenu');
+  if (mDiv.innerHTML == miniMenu) {
+    for (var i in menuOptions){
+      bigMenu += '<select id="' + i + '"' +
+        (i == Object.keys(menuOptions)[0] ? '' : ' style="width:100%;"') + '>';
+      for (var j in menuOptions[i]) {
+        bigMenu += '<option value="' + j + '"' +
+          (selectedOptions[i] == [j] ? ' selected' : '') +
+          '>' + j + '</option>';
+      }
+      bigMenu += '</select><br />';
+    }
+    bigMenu += '<input type="text" size=8 id="fileToRender" ' +
+      'style="box-sizing:border-box; width:100%;" value="' +
+      fileToRender + '"><br />';
+    mDiv.innerHTML = bigMenu;
+  } else {
+    mDiv.innerHTML = miniMenu;
+  }
+}
+
+function menuEffect () {
+  for (var i in menuOptions){
+    var selectElement = document.getElementById(i);
+    selectedOptions[i] = selectElement.selectedOptions[0].innerText;
+    if (menuOptions[i][selectedOptions[i]]) { // Unset if default
+      localStorage.removeItem(i);
+    } else { // Set if not default
+      localStorage.setItem(i, selectedOptions[i]);
+    }
+  }
+  settingsApply();
+}
+
+function settingsApply () {
+  switch (selectedOptions['theme']) {
+    case 'dark':
+      cssDark.media.mediaText  = cssAlwaysMedia;
+      cssLight.media.mediaText = cssNeverMedia;
+      break;
+    case 'light':
+      cssDark.media.mediaText  = cssNeverMedia;
+      cssLight.media.mediaText = cssAlwaysMedia;
+      break;
+    default:
+      cssDark.media.mediaText  = cssDarkMedia;
+      cssLight.media.mediaText = cssLightMedia;
+  }
+  switch (selectedOptions['text-width']) {
+    case 'readable':
+      document.body.style.maxWidth   = '70ch';
+      document.body.style.margin     = 'auto';
+      document.body.style.fontSize   = '131.25%';
+      break;
+    default:
+      document.body.style.maxWidth   = '';
+      document.body.style.margin     = '';
+      document.body.style.fontSize   = '';
+  }
+  document.body.style.fontFamily = selectedOptions['font-family'];
+  if (textToParse != '') {updateContent();}
+  var newTarget = document.getElementById('fileToRender');
+  if (newTarget && newTarget.value != fileToRender){
+    fileToRender = newTarget.value;
+    oReq.open('GET', fileToRender);
+    oReq.send();
+  }
+  // Make address bar reflect non-default settings
+  var newGetParameters = '';
+  for (var k in selectedOptions) {
+    if (!menuOptions[k][selectedOptions[k]]) {
+      newGetParameters += '&' + k + '=' + selectedOptions[k];
+    }
+  }
+  if (fileToRender != defaultFile) {
+    newGetParameters += '&fileToRender=' + fileToRender;
+  }
+  if (newGetParameters != '') {
+    newGetParameters = '?' + newGetParameters.substr(1);
+  }
+  window.history.replaceState({}, '', location.pathname + newGetParameters);
+}
+
+function main () {
+  toggleMenu();
+  settingsApply();
+  oReq = new XMLHttpRequest();
+  oReq.addEventListener('load', reqListener);
+  oReq.open('GET', fileToRender);
+  oReq.send();
+  //
+  updateAnagram();
+}
     </script>
 	</head>
   <body onload="main()">
@@ -119,7 +323,8 @@
       <!--<h1 contenteditable="true" id="phrase2">delete google</h1><br />-->
       </form></center>
     <hr/>
-    <div id="readme"></div>
+    <div id="indexmdmenu" style="float:right; max-width:30vw; border:dotted" onchange="menuEffect()"></div>
+    <div id="parsed"></div>
 	</body>
 </html>
 
