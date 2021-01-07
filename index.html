@@ -15,7 +15,7 @@
         padding: 0px;
       }
       .big {
-        font-size: 200%; font-family: monospace; text-align: center;
+        font-family: monospace; text-align: center;
         width: 98%;
         max-width: 98%;
         word-break: break-all;
@@ -98,6 +98,26 @@ function updateAnagram() {
       styleOfNumber(map2[i2]['mappedTo'])
       )
   }
+
+  // Now change font size to fit screen
+  function updateInputFont(scaleFactor) {
+    document.getElementById('anagramForm').style.fontSize = (100 * scaleFactor) + '%';
+  }
+  function inputFontScaleTooHigh() {
+    if (window.innerHeight == null) {return true;}
+    console.log(document.getElementById('anagramForm').offsetHeight)
+    console.log(document.getElementById(window.innerHeight))
+    console.log(document.getElementById('anagramForm').offsetHeight > window.innerHeight)
+    return document.getElementById('anagramForm').offsetHeight > window.innerHeight;
+  }
+  var inputFontScale = 1;
+  updateInputFont(inputFontScale);
+  while (!inputFontScaleTooHigh()) {
+    inputFontScale += 0.01;
+    updateInputFont(inputFontScale);
+  }
+  inputFontScale -= 0.01;
+  updateInputFont(inputFontScale);
 }
 
 var fileToRender = 'README.md';
@@ -309,7 +329,7 @@ function main () {
     </script>
 	</head>
   <body onload="main()">
-    <center><form class="big" oninput="updateAnagram()" onchange="updateAnagram()">
+    <center><form class="big" id="anagramForm" oninput="updateAnagram()" onchange="updateAnagram()">
       <input class="big" id="phrase1" type="text" value="clogged toilet" /><br />
       <br />
       <!--<h1 contenteditable="true" id="phrase1">clogged toilet</h1><br />-->
