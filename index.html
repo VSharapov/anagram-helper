@@ -18,7 +18,7 @@
         font-family: monospace; text-align: center;
         width: 98%;
         max-width: 98%;
-        word-break: break-all;
+        word-break: keep-all;
       }
     </style>
     <style type="text/css" media="(prefers-color-scheme: light)">
@@ -103,20 +103,28 @@ function updateAnagram() {
   function updateInputFont(scaleFactor) {
     document.getElementById('anagramForm').style.fontSize = (100 * scaleFactor) + '%';
   }
-  function inputFontScaleTooHigh() {
-    if (window.innerHeight == null) {return true;}
-    console.log(document.getElementById('anagramForm').offsetHeight)
-    console.log(document.getElementById(window.innerHeight))
-    console.log(document.getElementById('anagramForm').offsetHeight > window.innerHeight)
-    return document.getElementById('anagramForm').offsetHeight > window.innerHeight;
+  function inputFontScaleCorrection() {
+    var scaleToFitWidth = 1.0;
+    var scaleToFitHeight = 1.0;
+    var i1bn2 = document.getElementById('in1butNot2');
+    var i2bn1 = document.getElementById('in2butNot1');
+    scaleToFitWidth = document.getElementById('anagramForm').offsetWidth / Math.max(i1bn2.offsetWidth, i2bn1.offsetWidth);
+    if (window.innerHeight != null) {
+      scaleToFitHeight = document.getElementById('anagramForm').offsetHeight / window.innerHeight;
+      scaleToFitHeight = window.innerHeight / document.getElementById('anagramForm').offsetHeight;
+    }
+    if(isNaN(scaleToFitWidth) || !isFinite(scaleToFitWidth)){scaleToFitWidth = 1.0;}
+    if(isNaN(scaleToFitHeight) || !isFinite(scaleToFitHeight)){scaleToFitHeight = 1.0;}
+    return Math.min(scaleToFitWidth, scaleToFitHeight);
   }
+  var lastScale = -1;
   var inputFontScale = 1;
   updateInputFont(inputFontScale);
-  while (!inputFontScaleTooHigh()) {
-    inputFontScale += 0.01;
+  while(Math.abs(lastScale-inputFontScale) > 0.1) {
+    lastScale = inputFontScale;
+    inputFontScale = inputFontScale * inputFontScaleCorrection();
     updateInputFont(inputFontScale);
   }
-  inputFontScale -= 0.01;
   updateInputFont(inputFontScale);
 }
 
@@ -330,7 +338,7 @@ function main () {
 	</head>
   <body onload="main()">
     <center><form class="big" id="anagramForm" oninput="updateAnagram()" onchange="updateAnagram()">
-      <input class="big" id="phrase1" type="text" value="clogged toilet" /><br />
+      <input class="big" id="phrase1" type="text" value="clogged toilet" style="font-size: 100%;" /><br />
       <br />
       <!--<h1 contenteditable="true" id="phrase1">clogged toilet</h1><br />-->
       <big>
@@ -338,7 +346,7 @@ function main () {
       <span class="big" id="in2butNot1">asd</span><br />
       </big>
       <br />
-      <input class="big" id="phrase2" type="text" value="delete google" /><br />
+      <input class="big" id="phrase2" type="text" value="delete google" style="font-size: 100%;" /><br />
       <!--<h1 contenteditable="true" id="phrase2">delete google</h1><br />-->
       </form></center>
     <hr/>

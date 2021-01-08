@@ -35,6 +35,8 @@ reddit became le repost-men
 # TODO:
 - Interface
     - [ ] Auto-resize text to fit width
+        - [X] On text change
+        - [ ] On window size change
     - [ ] Advanced settings menu
         - [ ] Custom ignore list vs. `[^0-9a-z]`
         - [ ] Hide matching letters
