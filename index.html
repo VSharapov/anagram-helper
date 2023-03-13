@@ -324,6 +324,14 @@ function settingsApply () {
   window.history.replaceState({}, '', location.pathname + newGetParameters);
 }
 
+// Credit to https://github.com/pbaratta
+document.getElementById('phrase1').onclick = function () {
+  x = this.value;
+  x = x.split('').sort(function(){return 0.5-Math.random()}).join('');
+  this.value = x;
+  updateAnagram(); return false;
+}
+
 function main () {
   toggleMenu();
   settingsApply();
