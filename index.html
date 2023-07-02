@@ -325,10 +325,16 @@ function settingsApply () {
 }
 
 // Credit to https://github.com/pbaratta
-document.getElementById('phrase1').onclick = function () {
-  x = this.value;
-  x = x.split('').sort(function(){return 0.5-Math.random()}).join('');
-  this.value = x;
+function randomizePhrase1() {
+  phraseField = document.getElementById('phrase1');
+  phrase = phraseField.value;
+  shuffled = phrase.split('')
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+    .join('');
+
+  phraseField.value = shuffled;
   updateAnagram(); return false;
 }
 
@@ -350,7 +356,7 @@ function main () {
       <br />
       <!--<h1 contenteditable="true" id="phrase1">clogged toilet</h1><br />-->
       <big>
-      <span class="big" id="in1butNot2">asd</span><hr />
+      <span class="big" id="in1butNot2" onclick="randomizePhrase1()" ontouchend="randomizePhrase1()">asd</span><hr />
       <span class="big" id="in2butNot1">asd</span><br />
       </big>
       <br />
