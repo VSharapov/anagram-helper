@@ -325,7 +325,8 @@ function settingsApply () {
 }
 
 // Credit to https://github.com/pbaratta
-document.getElementById('in1butNot2').onclick = function () {
+phrase1display = document.getElementById('in1butNot2');
+phrase1display.ontouchend = phrase1display.onclick = function () {
   phraseField = document.getElementById('phrase1');
   phrase = phraseField.value;
   shuffled = phrase.split('').sort(function(){return 0.5-Math.random()}).join('');
