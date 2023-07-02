@@ -325,8 +325,7 @@ function settingsApply () {
 }
 
 // Credit to https://github.com/pbaratta
-phrase1display = document.getElementById('in1butNot2');
-phrase1display.ontouchend = phrase1display.onclick = function () {
+function randomizePhrase1() {
   phraseField = document.getElementById('phrase1');
   phrase = phraseField.value;
   shuffled = phrase.split('').sort(function(){return 0.5-Math.random()}).join('');
@@ -352,7 +351,7 @@ function main () {
       <br />
       <!--<h1 contenteditable="true" id="phrase1">clogged toilet</h1><br />-->
       <big>
-      <span class="big" id="in1butNot2">asd</span><hr />
+      <span class="big" id="in1butNot2" onclick="randomizePhrase1()" ontouchend="randomizePhrase1()">asd</span><hr />
       <span class="big" id="in2butNot1">asd</span><br />
       </big>
       <br />
