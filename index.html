@@ -325,10 +325,11 @@ function settingsApply () {
 }
 
 // Credit to https://github.com/pbaratta
-document.getElementById('phrase1').onclick = function () {
-  x = this.value;
-  x = x.split('').sort(function(){return 0.5-Math.random()}).join('');
-  this.value = x;
+document.getElementById('in1butNot2').onclick = function () {
+  phraseField = document.getElementById('phrase1');
+  phrase = phraseField.value;
+  shuffled = phrase.split('').sort(function(){return 0.5-Math.random()}).join('');
+  phraseField.value = shuffled;
   updateAnagram(); return false;
 }
 
