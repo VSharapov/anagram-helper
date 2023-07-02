@@ -328,10 +328,11 @@ function settingsApply () {
 function randomizePhrase1() {
   phraseField = document.getElementById('phrase1');
   phrase = phraseField.value;
-  shuffled = phrase
+  shuffled = phrase.split('')
     .map(value => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
+    .map(({ value }) => value)
+    .join('');
 
   phraseField.value = shuffled;
   updateAnagram(); return false;
